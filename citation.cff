@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "QSC Coder: a deterministic content-analysis instrument for Governance-of-Expectations measurement"
+abstract: >-
+  A deterministic, peer-reviewable content-analysis tool that codes policy and
+  governance documents against a YAML codebook of twelve sub-codes spanning the
+  Expectation Construction (EXP) and Institutionalisation (INST) families, and
+  emits per-document Governance-of-Expectations measurements (the EXP/INST
+  imbalance score B, a specificity index, a named-standard mention index, an
+  EXP-INST co-occurrence matrix, and pipeline-completeness flags). Every run is
+  stamped with a cryptographic provenance manifest for independent
+  re-execution. No machine-learning component sits in the coding loop.
+type: software
+authors:
+  - family-names: Ashworth
+    given-names: Swann
+version: "2.0.0"
+date-released: "2026-06-04"
+license: MIT
+repository-code: "https://github.com/USERNAME/qsc-coder"   # replace USERNAME
+url: "https://github.com/USERNAME/qsc-coder"
+doi: "10.5281/zenodo.20547281"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20547281"
+    description: "Concept DOI (all versions) on Zenodo"
+keywords:
+  - governance of expectations
+  - quantum-safe cryptography
+  - post-quantum cryptography
+  - content analysis
+  - science and technology studies
+  - computational social science
+  - dictionary-based coding
+  - reproducible research
