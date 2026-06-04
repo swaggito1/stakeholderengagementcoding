@@ -1,0 +1,558 @@
+# QSC Codebook v2 — REF_CODES canonical definition
+# --------------------------------------------------
+# 12 sub-codes across 2 families: EXP (Expectation Construction)
+# and INST (Institutionalisation). Source: QSC_Research_Protocol_v5.xlsx,
+# REF_CODES sheet. Columns 7–18 of the 2_DOCUMENTS coding sheet.
+#
+# Schema per sub-code:
+#   code             short all-caps identifier
+#   col              column number in 2_DOCUMENTS coding sheet
+#   rule             what this sub-code captures (definition)
+#   threshold        plain-English qualifying criterion
+#   disqualify       plain-English disqualifying criterion
+#   threshold_regex  Perl regex applied case-insensitively to the KWIC window
+#                    (pre + match + post). A hit only qualifies if this fires.
+#   keywords         list of keywords / phrases for quanteda dictionary matching
+#
+# Regex: \\b in YAML double-quote = \b word boundary in R (perl = TRUE).
+# Multi-word keywords use quanteda phrase() matching (space-separated).
+#
+# Theoretical anchors: Brown & Michael (2003), Borup et al. (2006),
+# Konrad (2006), Budde & Konrad (2019), North (1990), Scott (2014).
+
+version: "2.0.0"
+window: 12
+
+families:
+
+  - code: EXP
+    label: Expectation Construction
+    subcodes:
+
+      - code: EXP_THREAT
+        col: 7
+        rule: >
+          Explicit articulation of quantum computing as a threat to current
+          cryptographic systems.
+        threshold: >
+          Must name quantum computing AND cryptographic vulnerability in
+          the same passage.
+        disqualify: >
+          General computing advances without crypto link; classical cyber
+          threats without quantum framing.
+        threshold_regex: "\\b(quantum|CRQC|HNDL|harvest.now|store.now|Q.day|Shor|fault.tolerant\\s+quantum)\\b"
+        keywords:
+          - quantum threat
+          - harvest now decrypt later
+          - HNDL
+          - CRQC
+          - cryptographically relevant quantum computer
+          - store-now-decrypt-later
+          - Q-day
+          - quantum risk
+          - post-quantum threat
+          - quantum attack
+          - quantum-enabled adversary
+          - quantum decryption
+          - Shor algorithm
+          - RSA break
+          - ECC vulnerability
+          - public-key compromise
+          - asymmetric cryptography risk
+          - quantum supremacy threat
+          - fault-tolerant quantum computer
+          - quantum adversary
+          - cryptographic vulnerability
+
+      - code: EXP_TIMELINE
+        col: 8
+        rule: >
+          Explicit temporal specification for when the quantum threat
+          materialises or when migration must complete.
+        threshold: >
+          Must contain a specific year, date range, or bounded temporal
+          expression (e.g. "by 2035", "Phase 1 by 2028", "within 10 years").
+        disqualify: >
+          Vague urgency without temporal anchor — "soon" or "imminent"
+          without a date or phase reference.
+        threshold_regex: "\\b(20\\d{2}|within\\s+(?:\\d+|five|ten|fifteen|twenty|thirty)\\s+years?|phase\\s*[1-9]|Q[1-4]\\s+20\\d{2}|migration\\s+window|planning\\s+horizon|deprecation\\s+date|readiness\\s+date|target\\s+date|sunset|phase.out|countdown)\\b"
+        keywords:
+          - timeline
+          - by 2025
+          - by 2027
+          - by 2030
+          - by 2033
+          - by 2035
+          - by 2040
+          - 2027-2033
+          - deadline
+          - migration window
+          - planning horizon
+          - phase 1
+          - phase 2
+          - phase 3
+          - target date
+          - readiness date
+          - deprecation date
+          - transition period
+          - time horizon
+          - sunset
+          - phase-out
+          - countdown
+          - within five years
+          - within ten years
+          - migration deadline
+
+      - code: EXP_URGENCY
+        col: 9
+        rule: >
+          Rhetorical framing of quantum threat as requiring immediate or
+          accelerated action.
+        threshold: >
+          Must use language conveying temporal pressure or explicit
+          consequence of delay.
+        disqualify: >
+          Neutral risk assessment without urgency framing; timeline
+          statements that do not carry pressure language.
+        threshold_regex: "\\b(urgent|immediate|cannot\\s+wait|act\\s+now|accelerat|time.sensitive|critical\\s+priority|without\\s+delay|imperative|race\\s+against|do\\s+not\\s+wait|pressing|delay\\s+is\\s+costly|no\\s+time\\s+to\\s+wait|as\\s+soon\\s+as\\s+possible|window\\s+is\\s+clos)\\b"
+        keywords:
+          - urgent
+          - immediate action
+          - cannot wait
+          - accelerate
+          - act now
+          - window closing
+          - time-sensitive
+          - critical priority
+          - pressing
+          - delay is costly
+          - race against time
+          - imperative
+          - without delay
+          - as soon as possible
+          - proactive
+          - do not wait
+          - no time to wait
+
+      - code: EXP_COLLECTIVE
+        col: 10
+        rule: >
+          Framing of quantum threat response as requiring coordinated
+          multi-actor effort.
+        threshold: >
+          Must reference multiple actor types OR ecosystem-level
+          coordination need.
+        disqualify: >
+          Single-organisation internal planning; bilateral cooperation
+          described without systemic or ecosystem framing.
+        threshold_regex: "\\b(ecosystem|multi.stakeholder|whole.of.society|public.private|cross.sector|government.industry|coordinated\\s+(response|approach|effort|action|multilateral)|joint\\s+effort|all\\s+stakeholders|sector.wide|shared\\s+infrastructure|collective\\s+responsib|national\\s+effort|international\\s+cooperation|supply\\s+chain\\s+coordinat|collaborative\\s+approach)\\b"
+        keywords:
+          - collective responsibility
+          - shared challenge
+          - ecosystem
+          - coordination
+          - whole-of-society
+          - multi-stakeholder
+          - joint effort
+          - collaborative approach
+          - public-private partnership
+          - cross-sector
+          - all stakeholders
+          - national effort
+          - international cooperation
+          - supply chain coordination
+          - sector-wide
+          - government-industry
+          - shared infrastructure
+          - coordinated response
+
+      - code: EXP_RISK
+        col: 11
+        rule: >
+          Formal risk assessment or quantified impact analysis of the
+          quantum threat.
+        threshold: >
+          Must contain structured risk language (likelihood, impact,
+          severity) OR quantified/categorised exposure assessment.
+        disqualify: >
+          Informal worry or general statements about danger without
+          assessment structure; keyword match in unrelated context.
+        threshold_regex: "\\b(risk\\s+(assessment|level|matrix|register|score|model|analysis)|likelihood|severity|impact\\s+analysis|vulnerability\\s+assessment|threat\\s+(vector|model)|probability|consequence|attack\\s+surface|classified\\s+data|long.lived\\s+data|national\\s+security\\s+risk|economic\\s+risk|cryptanalysis|proof\\s+of\\s+concept|side.channel)\\b"
+        keywords:
+          - risk assessment
+          - impact analysis
+          - likelihood
+          - severity
+          - exposure
+          - threat model
+          - risk register
+          - vulnerability assessment
+          - risk level
+          - critical risk
+          - risk matrix
+          - probability
+          - consequence
+          - attack surface
+          - threat vector
+          - risk score
+          - data sensitivity
+          - long-lived data
+          - classified data
+          - national security risk
+          - economic risk
+          - side-channel evaluation
+          - cryptanalysis
+          - proof of concept
+          - pilot
+          - trial
+
+      - code: EXP_CONTESTATION
+        col: 12
+        rule: >
+          Disagreement or counter-framing regarding quantum threat timeline,
+          severity, or migration response priority.
+        threshold: >
+          Must present an alternative position to mainstream quantum
+          threat framing — not merely acknowledge uncertainty.
+        disqualify: >
+          Acknowledging uncertainty without presenting a counter-position
+          or alternative framing.
+        threshold_regex: "\\b(contested|debated|disagreement|alternative\\s+view|premature|overstated|sceptic|skeptic|too\\s+early|not\\s+yet\\s+proven|speculative|exaggerated|no\\s+consensus|disputed|wait\\s+and\\s+see|some\\s+experts\\s+disagree|optimistic\\s+estimate|pessimistic\\s+estimate|premature\\s+investment)\\b"
+        keywords:
+          - contested
+          - debated
+          - disagreement
+          - alternative view
+          - premature
+          - overstated
+          - uncertainty
+          - scepticism
+          - skepticism
+          - too early
+          - not yet proven
+          - speculative
+          - exaggerated
+          - no consensus
+          - disputed timeline
+          - optimistic estimate
+          - pessimistic estimate
+          - some experts disagree
+          - premature investment
+          - wait and see
+
+  - code: INST
+    label: Institutionalisation
+    subcodes:
+
+      - code: INST_MANDATE
+        col: 13
+        rule: >
+          Binding or quasi-binding requirement to adopt post-quantum
+          cryptography, issued by an authority with enforcement capacity.
+        threshold: >
+          Must contain obligatory language (shall, must, required,
+          mandatory) FROM an authority with enforcement capacity.
+        disqualify: >
+          Recommendations, voluntary guidelines, aspirational targets
+          without enforcement mechanism.
+        threshold_regex: "\\b(shall|must|required|mandatory|obligat(ed|ion)|comply|enforce|binding|directive|regulation|decree|statutory|legislative|legal\\s+requirement|compliance\\s+obligation|non.compliance|NIS2|DORA)\\b"
+        keywords:
+          - mandate
+          - requirement
+          - shall
+          - must
+          - obligatory
+          - comply
+          - enforce
+          - binding
+          - directive
+          - regulation
+          - legal requirement
+          - compliance obligation
+          - regulatory requirement
+          - executive order
+          - memorandum
+          - statutory
+          - legislative
+          - decree
+          - mandatory migration
+          - deadline for compliance
+          - non-compliance penalty
+          - enforcement mechanism
+          - sector mandate
+          - sector requirement
+          - sector-specific regulation
+          - industry mandate
+          - critical infrastructure requirement
+          - CNI
+          - essential services
+          - NIS2
+          - DORA
+          - migration checklist
+          - readiness assessment
+          - gap analysis
+
+      - code: INST_STANDARD
+        col: 14
+        rule: >
+          Reference to or adoption of specific post-quantum cryptographic
+          standards or quantum key distribution (QKD) standards.
+        threshold: >
+          Must name a specific standard (FIPS, ISO, ETSI, ITU-T, national
+          equivalent) or a specific standard-setting process for PQC or QKD.
+        disqualify: >
+          General mention of "standards" or "standardisation" without
+          naming a specific standard or body/process.
+        threshold_regex: "\\b(FIPS\\s*(203|204|205|140|800)|ML.KEM|ML.DSA|SLH.DSA|CRYSTALS|Kyber|Dilithium|SPHINCS|CNSA|ISO.IEC\\s*[0-9]+|ETSI\\s*(GS|TS|EN)|ITU.T|QKD|quantum\\s+key\\s+distribution|NIST\\s*(SP|IR|PQC|competition)|BSI\\s+TR|ANSSI\\s+technical|approved\\s+algorithm|algorithm\\s+agil|hybrid\\s+KEM|composite\\s+certificate|FrodoKEM|BIKE|HQC|FALCON|XMSS|LMS|parameter\\s+set)\\b"
+        keywords:
+          - FIPS 203
+          - FIPS 204
+          - FIPS 205
+          - FIPS 140
+          - ML-KEM
+          - ML-DSA
+          - SLH-DSA
+          - CRYSTALS-Kyber
+          - CRYSTALS-Dilithium
+          - SPHINCS+
+          - CNSA 2.0
+          - ISO/IEC 23837
+          - ETSI GS QKD 004
+          - ETSI GS QKD 008
+          - ETSI GS QKD 014
+          - ETSI GS QKD 015
+          - ETSI GS QKD 018
+          - ITU-T Y.3800
+          - ITU-T Y.3801
+          - ITU-T X.1702
+          - QKD
+          - quantum key distribution
+          - QRNG
+          - NIST SP 800-208
+          - NIST IR 8413
+          - NIST PQC
+          - BSI TR-02102
+          - BSI TR-03116
+          - ANSSI technical position
+          - ENISA PQC
+          - standardisation
+          - standardization
+          - approved algorithm
+          - algorithm agility
+          - crypto-agility
+          - parameter set
+          - security level
+          - hybrid KEM
+          - composite certificate
+          - PQ/T hybrid
+          - TLS 1.3 PQC
+          - PKI migration
+          - FrodoKEM
+          - BIKE
+          - HQC
+          - Classic McEliece
+          - FALCON
+          - XMSS
+          - LMS
+          - HSS
+          - NIST competition
+          - PQC standardisation process
+          - algorithm selection
+
+      - code: INST_GOVERNANCE
+        col: 15
+        rule: >
+          Identification of governance body or authority responsible for
+          quantum-safe transition oversight, coordination, or enforcement.
+        threshold: >
+          Must name a specific body AND attribute a governance role
+          (oversight, coordination, enforcement, compliance tracking).
+        disqualify: >
+          Mention of an organisation without attributing a governance
+          function or role in the QSC transition.
+        threshold_regex: "\\b(NIST|NSA|CISA|ONCD|OMB|CNSS|DISA|BSI|ANSSI|SGDSN|AIVD|NCSC|ENISA|NATO|NCIA|KISA|FSB|FSTEC|SCA|TC260|CAC|MIIT|governance|oversight|responsible\\s+authority|coordinating\\s+body|lead\\s+agency|competent\\s+authority|designated\\s+authority|national\\s+coordinator|inter.agency|task\\s+force|steering\\s+committee|compliance\\s+track|audit\\s+cycle|annual\\s+assessment)\\b"
+        keywords:
+          - governance body
+          - oversight
+          - responsible authority
+          - coordinating body
+          - national authority
+          - NIST
+          - NSA
+          - CISA
+          - ONCD
+          - OMB
+          - DHS
+          - CNSS
+          - DISA
+          - BSI
+          - ANSSI
+          - SGDSN
+          - AIVD
+          - NCSC-NL
+          - ENISA
+          - European Commission
+          - NATO CCDCOE
+          - NATO NCIA
+          - KISA
+          - NSRI
+          - ETRI
+          - MSIT
+          - FSB
+          - FSTEC
+          - Rosstandart
+          - SCA
+          - TC260
+          - CAC
+          - MIIT
+          - competent authority
+          - lead agency
+          - designated authority
+          - national coordinator
+          - working group
+          - steering committee
+          - inter-agency
+          - task force
+          - compliance tracking
+          - annual assessment
+          - audit cycle
+          - continuous monitoring
+          - QvC Rijk
+          - Quantum Delta NL
+          - Plan Quantique
+          - Quantum Flagship
+          - DIANA
+          - QuNET
+
+      - code: INST_CERTIFICATION
+        col: 16
+        rule: >
+          Certification, accreditation, or conformance assessment for
+          quantum-safe products or implementations.
+        threshold: >
+          Must reference a formal certification process, conformance
+          scheme, or named evaluation framework.
+        disqualify: >
+          Self-declaration or marketing claims of quantum-safety without
+          third-party assessment or formal scheme reference.
+        threshold_regex: "\\b(certif(ied|ication|icate)|accreditat|Common\\s+Criteria|CAVP|CMVP|FIPS\\s*140|conformance|validat(ed|ion)|protection\\s+profile|security\\s+target|EAL|SOG.IS|CSPN|mutual\\s+recognition|approved\\s+(product|list)|qualified\\s+(solution|product)|test\\s+laborator|assurance\\s+level|evaluation\\s+(scheme|facility|lab)|certification\\s+testing)\\b"
+        keywords:
+          - certification
+          - accreditation
+          - Common Criteria
+          - CAVP
+          - CMVP
+          - conformance
+          - evaluation
+          - assurance level
+          - qualified product
+          - EAL
+          - protection profile
+          - security target
+          - validation
+          - verified
+          - approved product
+          - certified product
+          - qualified solution
+          - security visa
+          - CSPN
+          - SOG-IS
+          - mutual recognition
+          - evaluation facility
+          - test laboratory
+          - FIPS 140
+          - module validation
+          - conformance testing
+          - compliance test
+          - certification testing
+          - evaluation scheme
+          - validation framework
+          - assessment criteria
+          - reference implementation
+
+      - code: INST_SCOPE
+        col: 17
+        rule: >
+          Jurisdictional, sectoral, or system-level delimitation of where
+          PQC institutionalisation applies.
+        threshold: >
+          Must specify the boundary of applicability — which sectors,
+          jurisdictions, system types, or populations are covered.
+        disqualify: >
+          Documents that apply generally without delimiting scope;
+          single-system technical descriptions without scope framing.
+        threshold_regex: "\\b(government\\s+systems?|federal|defence\\s+sector|financial\\s+sector|telecom|energy\\s+(sector|grid|infrastructure)|healthcare|transport\\s+sector|cross.border|EU.wide|NATO.wide|member\\s+states?|public\\s+sector|private\\s+sector|supply\\s+chain\\s+scope|critical\\s+infrastructure|essential\\s+services|CNI|modular\\s+cryptograph|algorithm.agil|future.proof|applicabilit|jurisdict|sector\\s+coverage)\\b"
+        keywords:
+          - scope
+          - sector
+          - jurisdiction
+          - applicability
+          - coverage
+          - critical infrastructure
+          - essential services
+          - cross-sector
+          - national
+          - transnational
+          - government systems
+          - federal
+          - defence sector
+          - financial sector
+          - telecom
+          - energy sector
+          - healthcare
+          - transport
+          - cross-border
+          - EU-wide
+          - NATO-wide
+          - member states
+          - public sector
+          - private sector
+          - supply chain scope
+          - all sectors
+          - modular cryptography
+          - algorithm-independent
+          - pluggable
+          - future-proof
+
+      - code: INST_TRANSITION
+        col: 18
+        rule: >
+          Structured pathway, roadmap, or migration framework for managing
+          the quantum-safe transition, issued or endorsed by an institutional
+          authority.
+        threshold: >
+          Must provide actionable migration steps or a structured transition
+          pathway from or endorsed by an institutional authority.
+        disqualify: >
+          General awareness content; threat description without migration
+          pathway; vendor-only guides without institutional backing or
+          endorsement.
+        threshold_regex: "\\b(roadmap|transition\\s+(plan|framework|pathway|status)|migration\\s+(framework|strategy|path|guide|checklist|plan|progress|milestone)|action\\s+plan|playbook|implementation\\s+(roadmap|guide)|crypto.agilit|maturity\\s+model|readiness\\s+level|step.by.step|progress\\s+report|scorecard|migration\\s+status|migration\\s+milestone|transition\\s+governance)\\b"
+        keywords:
+          - roadmap
+          - transition plan
+          - migration framework
+          - action plan
+          - migration guide
+          - playbook
+          - implementation roadmap
+          - crypto-agility requirement
+          - migration strategy
+          - best practice
+          - guideline
+          - recommendation
+          - practical guide
+          - transition roadmap
+          - migration path
+          - step-by-step
+          - migration checklist
+          - maturity model
+          - readiness level
+          - deployed
+          - operational
+          - live
+          - migration progress
+          - transition status
+          - progress report
+          - scorecard
+          - migration milestone
