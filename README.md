@@ -1,5 +1,5 @@
 [README.md](https://github.com/user-attachments/files/28616209/README.md)
-# stakeholderengagementcoding# QSC Coder
+QSC Coder
 
 A deterministic, peer-reviewable content-analysis instrument for measuring the
 **Governance of Expectations** in the quantum-safe cryptographic (QSC)
@@ -9,7 +9,7 @@ Construction (**EXP**) and Institutionalisation (**INST**) — and emits
 per-document GoE measurements together with a cryptographic provenance manifest
 for independent re-execution.
 
-Built for a doctoral thesis in Science and Technology Studies. Runs **headless**
+Built for a master thesis in Science and Technology Studies. Runs **headless**
 from the command line; there is no machine-learning component in the coding
 loop, so identical inputs yield identical outputs on every run.
 
